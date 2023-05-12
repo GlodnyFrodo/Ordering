@@ -120,6 +120,11 @@ while True:
                 all(char.isalpha() or char in ['-', ' '] for char in surname) and \
                 not (surname.startswith(('-', ' ')) or name.endswith(('-', ' ')) or surname.endswith(('-', ' '))
                      or name.startswith(('-', ' '))) and name and surname:
+            if name:
+                name = ' '.join([word.capitalize() for word in name.split(' ')])
+            if surname:
+                surname = ' '.join([word.capitalize() for word in surname.split(' ')])
+                surname = '-'.join([word.capitalize() for word in surname.split('-')])
             try:
                 date = datetime.strptime(dob, '%Y-%m-%d')
                 if date.year < 1900 or date.year > 2007:
