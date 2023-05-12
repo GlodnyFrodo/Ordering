@@ -25,7 +25,7 @@ layout = [
      sg.Button('Usuń produkt', key='-REMOVE-')],
     [sg.Text('Zamówione produkty')],
     [sg.Table(values=[], headings=['Nazwa produktu', 'Ilość', 'Cena szt'], key='-TABLE-')],
-    [sg.Button('Zapisz zamówienie', key='-SAVE-')]
+    [sg.Button('Zapisz zamówienie', key='-SAVE-'), sg.Button('Wyczyść', key='-CLEAR-')]
 ]
 
 window = sg.Window('Zamówienie', layout)
@@ -131,4 +131,10 @@ while True:
         else:
             sg.popup('Pola imię i nazwisko nie mogą być puste i mogą zawierać tylko litery, spacje i "-"')
 
+    if event == '-CLEAR-':
+        product_table = []
+        window['-NAME-'].update(value='')
+        window['-SURNAME-'].update(value='')
+        window['-DOB-'].update(value='')
+        window['-TABLE-'].update(values='')
 window.close()
