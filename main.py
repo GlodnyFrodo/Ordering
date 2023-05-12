@@ -48,7 +48,7 @@ while True:
                 product_table.append([add_values[0], quantity, price])
                 window['-TABLE-'].update(values=product_table)
                 add_window.close()
-                
+
     if event == '-REMOVE-' and product_table != []:
 
         try:
@@ -59,5 +59,33 @@ while True:
         except IndexError:
             continue
 
+    if event == '-EDIT-':
+        try:
+            selected_product = values['-TABLE-'][0]
+
+            if selected_product is not None:
+                row_values = product_table[int(selected_product)]
+
+                edit_layout = [
+                    [sg.Text('Nazwa:'), sg.InputText(row_values[0], key='-NAME-')],
+                    [sg.Text('Cena:'), sg.InputText(row_values[1], key='-PRICE-')],
+                    [sg.Text('Ilość:'), sg.InputText(row_values[2], key='-QUANTITY-')],
+                    [sg.Button('Zapisz zmiany'), sg.Button('Anuluj')]
+                ]
+
+                edit_window = sg.Window('Edycja produktu', edit_layout)
+
+                while True:
+                    edit_event, edit_values = edit_window.read()
+
+                    if edit_event == sg.WIN_CLOSED or edit_event == 'Anuluj':
+                        break
+                    if edit_event == 'Zapisz zmiany':
+                        product_table[int(selected_product)] = [edit_values['-NAME-'], edit_values['-PRICE-'],
+                                                                edit_values['-QUANTITY-']]
+                        window['-TABLE-'].update(values=product_table)
+                        edit_window.close()
+        except IndexError:
+            continue
 
 window.close()
