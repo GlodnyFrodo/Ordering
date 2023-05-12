@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 from datetime import datetime
 import json
 
+
 def save_order(name, surname, dob, product_table, filename):
     headings = ["Nazwa", "Ilosc", "Cena"]
     products = [dict(zip(headings, product)) for product in product_table]
@@ -11,8 +12,9 @@ def save_order(name, surname, dob, product_table, filename):
         'data_urodzenia': dob,
         'produkty': products
     }
-    with open(filename, 'w') as f:
-        json.dump(order, f)
+    with open(filename, 'w', encoding='utf-8') as f:
+        json.dump(order, f, ensure_ascii=False)
+
 
 product_table = []
 
