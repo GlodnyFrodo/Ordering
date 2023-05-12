@@ -1,5 +1,19 @@
 import PySimpleGUI as sg
 from datetime import datetime
+import json
+
+def save_order(name, surname, dob, product_table, filename):
+    headings = ["Nazwa", "Ilosc", "Cena"]
+    products = [dict(zip(headings, product)) for product in product_table]
+    order = {
+        'imie': name,
+        'nazwisko': surname,
+        'data_urodzenia': dob,
+        'produkty': products
+    }
+    with open(filename, 'w') as f:
+        json.dump(order, f)
+
 product_table = []
 
 sg.theme('DarkGreen4')
@@ -109,6 +123,7 @@ while True:
                 if date.year < 1900 or date.year > 2007:
                     sg.popup('Rok urodzenia musi być pomiędzy 1900 a 2007!')
                 else:
+                    save_order(name, surname, dob, product_table, filename)
                     sg.popup('Zamówienie zostało zapisane do pliku json', title='Zamówienie zapisano', keep_on_top=True)
 
             except ValueError:
