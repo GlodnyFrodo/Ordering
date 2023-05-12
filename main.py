@@ -48,6 +48,16 @@ while True:
                 product_table.append([add_values[0], quantity, price])
                 window['-TABLE-'].update(values=product_table)
                 add_window.close()
+                
+    if event == '-REMOVE-' and product_table != []:
+
+        try:
+            selected_row = values['-TABLE-'][0]
+            del product_table[selected_row]
+            window['-TABLE-'].update(values=product_table)
+            del selected_row
+        except IndexError:
+            continue
 
 
 window.close()
