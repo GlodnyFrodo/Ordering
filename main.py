@@ -1,5 +1,5 @@
 import PySimpleGUI as sg
-
+from datetime import datetime
 product_table = []
 
 sg.theme('DarkGreen4')
@@ -87,5 +87,33 @@ while True:
                         edit_window.close()
         except IndexError:
             continue
+
+    if event == '-SAVE-' and product_table != []:
+
+        filename = sg.popup_get_file('Wybierz plik do zapisu komentarzy', save_as=True,
+                                     file_types=(('JSON files', '*.json'),))
+
+        if not filename.endswith('.json'):
+            filename += '.json'
+
+        name = values['-NAME-']
+        surname = values['-SURNAME-']
+        dob = values['-DOB-']
+
+        if all(char.isalpha() or char in ['-', ' '] for char in name) and \
+                all(char.isalpha() or char in ['-', ' '] for char in surname) and \
+                not (surname.startswith(('-', ' ')) or name.endswith(('-', ' ')) or surname.endswith(('-', ' '))
+                     or name.startswith(('-', ' '))) and name and surname:
+            try:
+                date = datetime.strptime(dob, '%Y-%m-%d')
+                if date.year < 1900 or date.year > 2007:
+                    sg.popup('Rok urodzenia musi być pomiędzy 1900 a 2007!')
+                else:
+                    sg.popup('Zamówienie zostało zapisane do pliku json', title='Zamówienie zapisano', keep_on_top=True)
+
+            except ValueError:
+                sg.popup('Niepoprawny format daty!')
+        else:
+            sg.popup('Pola imię i nazwisko nie mogą być puste i mogą zawierać tylko litery, spacje i "-"')
 
 window.close()
